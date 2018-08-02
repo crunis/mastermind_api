@@ -1,3 +1,7 @@
+import random
+
+def generate_code(length, chars):
+    return ''.join(random.choices(chars, k=length))
 
 
 def remove_char(string, pos):

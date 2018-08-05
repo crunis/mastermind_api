@@ -18,4 +18,19 @@ def new_game(length, alphabet):
     redis_client.set(
         game_id, 
         dict(alphabet = alphabet, length = length, code = code))
+
     return game_id
+
+
+def get_game(game_id):
+    game_info = redis_client.get(game_id)
+    if not game_info:
+        raise IndexError("Game not found")
+
+    return game_info
+
+
+def check_guess(game_id, guess):
+    game_info = get_game(game_id)
+
+    return mastermind.compute_answer(game_info['code'], guess)

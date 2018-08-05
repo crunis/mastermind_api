@@ -1,5 +1,5 @@
 import unittest, re
-from game_manager import new_game, get_game, check_guess
+from gamemanager import new_game, get_game, check_guess
 
 class TestGameManager(unittest.TestCase):
     def test_new_game(self):

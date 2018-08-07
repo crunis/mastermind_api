@@ -16,6 +16,7 @@ class TestMastermind(unittest.TestCase):
         self.assertEqual(compute_answer("123", "124"),   [2, 0])
         self.assertEqual(compute_answer("1234", "1244"), [3, 0])
         self.assertEqual(compute_answer("1234", "4555"), [0, 1])
+        self.assertEqual(compute_answer("5123", "5132"), [2, 2])
         self.assertRaises(ValueError, compute_answer, "12345", "1234")
 
     def test_generate_code(self):

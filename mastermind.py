@@ -17,21 +17,27 @@ def compute_answer(code, guess):
         raise ValueError(
             "Guess length should be equal to code length (%s)" % length)
 
+    b = w = 0
+
     # Find blacks
+    black_pos = []
     for i in range(length):
         if code[i] == guess[i]:
-            code = remove_char(code, i)
-            guess = remove_char(guess, i)
-            [b, w] = compute_answer(code, guess)
-            return [b + 1, w]
+            black_pos.append(i)
+            b += 1
+
+    # Remove black findings from guess and code
+    # do it in reverse order to keep black_pos indexes valid
+    for pos in reversed(black_pos):
+        code = remove_char(code, pos)
+        guess = remove_char(guess, pos)
 
     # Find whites
-    for i in range(length):
-        for j in range(length):
+    for i in range(len(guess)):
+        for j in range(len(code)):
             if guess[i] == code[j]:
-                guess = remove_char(guess, i)
+                w += 1
                 code = remove_char(code, j)
-                [b, w] = compute_answer(code, guess)
-                return [b, w + 1]
+                break
 
-    return [0, 0]
+    return [b, w]

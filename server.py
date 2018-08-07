@@ -77,7 +77,7 @@ def game_guess(game_id):
     json_data = request.get_json()
     if not game_id:
         raise WrongParameters("Missing game_id parameter")
-    if 'guess' not in json_data:
+    if not json_data or 'guess' not in json_data:
         raise WrongParameters("Missing guess parameter")
 
     try:

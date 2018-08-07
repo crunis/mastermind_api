@@ -11,17 +11,20 @@ class TestServer(unittest.TestCase):
         app.config['TESTING'] = True
         return app.test_client()
 
-    def test_new_game(self):
+    def create_game(self):
         rv = self.client().post('/games')
         # Check we got a json response
         self.assertEqual(
             rv.headers['content-type'],
             'application/json; charset=utf-8')
-        res = json.loads(rv.data)
+        return json.loads(rv.data)
+
+    def test_new_game(self):
+        game_info = self.create_game()
         # res has only 'game_id' key
-        self.assertEqual([*res], ['game_id'])
+        self.assertEqual([*game_info], ['game_id'])
         # res['game_id'] is only made of numbers
-        self.assertTrue(res['game_id'].isdigit())
+        self.assertTrue(game_info['game_id'].isdigit())
 
 
 if __name__ == '__main__':

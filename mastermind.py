@@ -12,7 +12,7 @@ def remove_char(string, pos):
 def compute_answer(code, guess):
     length = len(code)
     if len(guess) != length:
-        raise ValueError("The length of the guess should be equal to the code lenght (%s)" % length)
+        raise ValueError("The length of the guess should be equal to the code length (%s)" % length)
 
     # Find blacks
     for i in range(length):

@@ -3,8 +3,9 @@ import os
 import logging
 import json
 
-EXPIRES = 3600 * 24 * 7 # Automatically purge games in a week
+EXPIRES = 3600 * 24 * 7  # Automatically purge games in a week
 client = None
+
 
 def rc():
     global client
@@ -15,7 +16,7 @@ def rc():
     logging.info("Creating new Redis client")
     redis_host = os.getenv('REDIS_HOST', 'redis')
     redis_port = int(os.getenv('REDIS_PORT', '6379'))
-    client =  redis.StrictRedis(host=redis_host, port=redis_port, db=0)
+    client = redis.StrictRedis(host=redis_host, port=redis_port, db=0)
 
     return client
 

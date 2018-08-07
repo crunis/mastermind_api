@@ -1,5 +1,6 @@
 import random
 
+
 def generate_code(length, chars):
     return ''.join(random.choices(chars, k=length))
 
@@ -9,10 +10,12 @@ def remove_char(string, pos):
         raise IndexError
     return string[0:pos] + string[pos+1:len(string)]
 
+
 def compute_answer(code, guess):
     length = len(code)
     if len(guess) != length:
-        raise ValueError("The length of the guess should be equal to the code length (%s)" % length)
+        raise ValueError(
+            "Guess length should be equal to code length (%s)" % length)
 
     # Find blacks
     for i in range(length):
@@ -26,9 +29,9 @@ def compute_answer(code, guess):
     for i in range(length):
         for j in range(length):
             if guess[i] == code[j]:
-                guess = remove_char(guess,i)
+                guess = remove_char(guess, i)
                 code = remove_char(code, j)
                 [b, w] = compute_answer(code, guess)
                 return [b, w + 1]
 
-    return [ 0, 0 ]
+    return [0, 0]

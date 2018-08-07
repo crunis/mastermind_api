@@ -1,5 +1,7 @@
 import time
-import redisclient, mastermind
+import redisclient
+import mastermind
+
 
 def new_id():
     c = 0
@@ -10,14 +12,14 @@ def new_id():
         c += 1
         if c == 10:
             raise RuntimeError("Error: Can't generate an unused game id")
-    
+
 
 def new_game(length, alphabet):
     game_id = new_id()
     code = mastermind.generate_code(length, alphabet)
     redisclient.set(
-        game_id, 
-        dict(alphabet = alphabet, length = length, code = code))
+        game_id,
+        dict(alphabet=alphabet, length=length, code=code))
 
     return game_id
 

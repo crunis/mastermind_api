@@ -55,6 +55,22 @@ def new_game():
     return dict(game_id=gamemanager.new_game(4, '123456'))
 
 
+@app.route("/games/<game_id>", endpoint='get_game', methods=['GET'])
+@process_response
+def get_game(game_id):
+    if not game_id:
+        raise WrongParameters("Missing game_id parameter")
+
+    try:
+        game_info = gamemanager.get_game(game_id)
+    except IndexError as e:
+        raise WrongGameId("No game with game_id=%s" % game_id)
+
+    game_info.pop('code')
+
+    return game_info
+
+
 @app.route("/games/<game_id>/guess", endpoint='game_guess', methods=['POST'])
 @process_response
 def game_guess(game_id):

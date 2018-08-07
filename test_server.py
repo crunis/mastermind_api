@@ -57,6 +57,33 @@ class TestServer(unittest.TestCase):
         self.assertEqual([*guess_reply], ['error'])
         self.assertEqual(rv.status_code, 400)
 
+    def test_game_history(self):
+        GUESSES = ['1234', '1212', '3434']
+        game_info = self.create_game()
+        game_id = game_info['game_id']
+        for guess in GUESSES:
+            self.make_guess(game_id, {'guess': guess})
+
+        rv = self.client().get('/games/%s' % game_id)
+        # Check we got a json response
+        self.assertEqual(
+            rv.headers['content-type'],
+            'application/json; charset=utf-8')
+        game_info = json.loads(rv.data)
+
+        # check returned keys
+        self.assertEqual(rv.status_code, 200)
+        self.assertEqual(set([*game_info]),
+                         set(['alphabet', 'length', 'historic']))
+        self.assertEqual(set([*(game_info['historic'][0])]),
+                         set(['ts', 'guess', 'b', 'w']))
+        self.assertEqual(len(game_info['historic']), len(GUESSES))
+
+        historic_guesses = []
+        for i in range(len(GUESSES)):
+            historic_guesses.append(game_info['historic'][i]['guess'])
+        self.assertEqual(GUESSES, historic_guesses)
+
 
 if __name__ == '__main__':
     unittest.main()

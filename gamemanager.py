@@ -19,7 +19,7 @@ def new_game(length, alphabet):
     code = mastermind.generate_code(length, alphabet)
     redisclient.set(
         game_id,
-        dict(alphabet=alphabet, length=length, code=code))
+        dict(alphabet=alphabet, length=length, code=code, historic=[]))
 
     return game_id
 
@@ -35,4 +35,9 @@ def get_game(game_id):
 def check_guess(game_id, guess):
     game_info = get_game(game_id)
 
-    return mastermind.compute_answer(game_info['code'], guess)
+    [b, w] = mastermind.compute_answer(game_info['code'], guess)
+    game_info['historic'].append(
+        {'ts': time.time(), 'guess': guess, 'b': b, 'w': w})
+    redisclient.set(game_id, game_info)
+
+    return [b, w]

@@ -31,16 +31,16 @@ def process_response(func):
         except WrongParameters as e:
             result = {'error': str(e)}
             status = 400
-            print(e)
+            logging.error(e)
         except WrongGameId as e:
             result = {'error': str(e)}
             status = 404
-            print(e)
+            logging.error(e)
         except Exception as e:
             # Don't leak information on unexpected errors
             result = {'error': 'server error'}
             status = 500
-            print(e)
+            logging.error(e)
 
         res_json = json.dumps(result, ensure_ascii=False)
         headers = {'Content-Type': 'application/json; charset=utf-8'}
